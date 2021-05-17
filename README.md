@@ -12,7 +12,7 @@ As developers we want to build this application since the budgeting applications
 ### Overview
 Our plan for this project is to develop a web application that allows users to input bank transaction data in the form of csv or manual entry and generate useful reports and categorizations from that data. Users can set budget alerts, categorize their transactions (ie. gas, grocery, dining), and see history of spending patterns. Users will be able to create accounts to maintain their data which will all be stored in a MySQL database backend. 
 
-(/images/441_diagram.png "System Diagram")
+![Project Diagram](images/441_diagram.png "Project Diagram")
 
 ### User Summary Table
 | Priority | User | Description |
