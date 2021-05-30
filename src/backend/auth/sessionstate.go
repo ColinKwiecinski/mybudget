@@ -2,9 +2,11 @@ package auth
 
 import (
 	"time"
+
+	"mybudget.com/src/backend/users"
 )
 
 type SessionState struct {
-	StartTime time.Time `json:"time"`
-	User      *User     `json:"user"`
+	StartTime time.Time   `json:"time"`
+	User      *users.User `json:"user"`
 }

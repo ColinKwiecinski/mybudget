@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"assignments-limj27/servers/gateway/models/users"
 	"encoding/json"
 	"net/http"
 	"std/mybudget/src/backend/sessions"
@@ -19,7 +20,8 @@ func (hc *HandlerContext) UsersHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Request body must be in JSON", http.StatusUnsupportedMediaType)
 		return
 	}
-	newUser := &NewUser{}
+	newUser := &users.NewUser{}
+
 	denc := json.NewDecoder(r.Body)
 	if err := denc.Decode(newUser); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -120,7 +122,7 @@ func (hc *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Req
 			return
 		}
 	} else if r.Method == "DELETE" {
-		currUser := sessionState.user
+		currUser := sessionState.User
 		hc.Users.Delete(currUser.ID)
 
 		_, err := sessions.EndSession(r, hc.SigningKey, hc.Sessions)
