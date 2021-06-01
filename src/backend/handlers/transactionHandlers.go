@@ -3,7 +3,10 @@
 package handlers
 
 import (
+	"encoding/csv"
+	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -53,22 +56,6 @@ func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *
 }
 
 
-// Helper functions
-
-// Encode user data to JSON and write to http output
-// func writeUser(w http.ResponseWriter, user *users.User, status int) bool {
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.WriteHeader(status)
-// 	enc := json.NewEncoder(w)
-// 	resp, err := json.Marshal(user)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return false
-// 	}
-// 	enc.Encode(resp)
-// 	return true
-// }
-
 // Response for when an unsupported method is attempted
 func statusNotAllowed(w http.ResponseWriter) {
 	http.Error(w, "invalid status method attempted", http.StatusMethodNotAllowed)
@@ -82,4 +69,36 @@ func checkJSONHeader(w http.ResponseWriter, r *http.Request) bool {
 		return true
 	}
 	return false
+}
+
+func processCSV(w http.ResponseWriter, r *http.Request) bool {
+	r.ParseMultipartForm(10 << 20) // Limit upload file size to 10MB
+	file, handler, err := r.FormFile("myFile") // TODO: do I need to change myfile to actually grab the POST body?
+	if err != nil {
+		http.Error(w, "error while processing csv upload: " + err.Error(), http.StatusBadRequest)
+		return false
+	}
+	fileName := handler.Filename
+	tempFile, err := ioutil.TempFile("backend/handlers/temp-csv", "upload-*.csv")
+	if err != nil {
+		http.Error(w, "error processing csv upload: " + err.Error(), http.StatusBadRequest)
+		return false
+	}
+	defer tempFile.Close()
+
+	csvFile, err := os.Open(fileName) // TODO: verify usage of fileName instead of some other path string
+	if err != nil {
+		http.Error(w, "file not found when retrieving csv", http.StatusInternalServerError)
+		return false
+	}
+	defer csvFile.Close()
+
+	reader := csv.NewReader(csvFile)
+	content, _ := reader.ReadAll()
+	if len(content) < 1 {
+		http.Error(w, "empty csv file", http.StatusInternalServerError)
+		return false
+	}
+	// TODO: Left off here. Need to continue processing csv file. Find a way to marshall each column into the fields of the struct
+	// and then create an array of struct objects and repeatedly loop/call the database function to upload the transactions into the db. 
 }
