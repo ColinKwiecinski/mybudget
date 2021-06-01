@@ -1,8 +1,8 @@
 package auth
 
 import (
+	"mybudget.com/src/backend/sessions"
 	"mybudget.com/src/backend/users"
-	"std/mybudget/src/backend/sessions"
 )
 
 type HandlerContext struct {

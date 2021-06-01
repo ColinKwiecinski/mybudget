@@ -1,13 +1,14 @@
 package auth
 
 import (
-	"assignments-limj27/servers/gateway/models/users"
 	"encoding/json"
 	"net/http"
-	"std/mybudget/src/backend/sessions"
 	"strconv"
 	"strings"
 	"time"
+
+	"mybudget.com/src/backend/sessions"
+	"mybudget.com/src/backend/users"
 )
 
 //Handler to handle /users
