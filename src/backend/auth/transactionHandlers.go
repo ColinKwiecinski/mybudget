@@ -1,6 +1,7 @@
+package auth
+
 // These handlers are designed to recieve input from the client side
 // of the application and process and store the transaction data
-package auth
 
 import (
 	"encoding/csv"

@@ -2,13 +2,12 @@ package auth
 
 import (
 	"encoding/json"
-	"net/http"
 	"mybudget/src/backend/sessions"
 	"mybudget/src/backend/users"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
-
 	// "mybudget.com/src/backend/sessions"
 	// "mybudget.com/src/backend/users"
 )

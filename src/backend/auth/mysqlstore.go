@@ -5,7 +5,6 @@ import (
 	"errors"
 
 	"mybudget/src/backend/auth"
-	"mybudget/src/backend/handlers"
 
 	_ "github.com/go-sql-driver/mysql"
 )
