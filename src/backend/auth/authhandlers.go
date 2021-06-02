@@ -3,7 +3,8 @@ package auth
 import (
 	"encoding/json"
 	"net/http"
-	"std/mybudget/src/backend/sessions"
+	"mybudget/src/backend/sessions"
+	"mybudget/src/backend/users"
 	"strconv"
 	"strings"
 	"time"
