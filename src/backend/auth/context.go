@@ -1,12 +1,13 @@
 package auth
 
 import (
-	"mybudget.com/src/backend/sessions"
-	"mybudget.com/src/backend/users"
+	"mybudget/src/backend/sessions"
+	"mybudget/src/backend/users"
 )
 
 type HandlerContext struct {
 	SigningKey string
 	Sessions   sessions.Store
 	Users      users.Store
+	DB 				 users.MysqlStore
 }

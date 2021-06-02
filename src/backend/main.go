@@ -4,19 +4,24 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
+
 	addr := os.Getenv("ADDR")
 	if len(addr) == 0 {
-		addr = ":80" // TODO: Change to 443 When implementing TLS
+		addr = ":443"
 	}
 
-	// TODO: update this to TLS mux
-	mux := http.NewServeMux()
+	tlsKeyPath := getEnv("TLSKEY")
+	tlsCertPath := getEnv("TLSCERT")
+
+	mux := mux.NewRouter()
 
 	log.Printf("Listening at %s", addr)
-	log.Fatal(http.ListenAndServe(addr, mux))
+	log.Fatal(http.ListenAndServeTLS(addr, tlsCertPath, tlsKeyPath, mux))
 }
 
 func getEnv(name string) string {
