@@ -3,12 +3,14 @@ package auth
 import (
 	"encoding/json"
 	"net/http"
+	"mybudget/src/backend/sessions"
+	"mybudget/src/backend/users"
 	"strconv"
 	"strings"
 	"time"
 
-	"mybudget.com/src/backend/sessions"
-	"mybudget.com/src/backend/users"
+	// "mybudget.com/src/backend/sessions"
+	// "mybudget.com/src/backend/users"
 )
 
 //Handler to handle /users
