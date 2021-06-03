@@ -55,9 +55,9 @@ func main() {
 	mux := mux.NewRouter()
 
 	mux.HandleFunc("/users", context.UsersHandler)
-	mux.HandleFunc("/users/", context.SpecificUserHandler)
+	mux.HandleFunc("/users/{UID}", context.SpecificUserHandler)
 	mux.HandleFunc("/transactions", context.TransactionHandler)
-	mux.HandleFunc("/transactions/", context.SpecificTransactionHandler)
+	mux.HandleFunc("/transactions/{UID}", context.SpecificTransactionHandler)
 
 	wrappedMux1 := NewResponseHeader(mux, "Access-Control-Allow-Origin", "*")
 	wrappedMux2 := NewResponseHeader(wrappedMux1, "Access-Control-Allow-Methods", "GET, PUT, POST, PATCH, DELETE")
@@ -74,6 +74,7 @@ func getEnv(name string) string {
 	if len(result) == 0 {
 		envNotFound(name)
 	}
+
 	return result
 }
 

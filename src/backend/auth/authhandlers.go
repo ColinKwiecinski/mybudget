@@ -2,7 +2,10 @@ package auth
 
 import (
 	"encoding/json"
+	"log"
+
 	"mybudget.com/src/backend/sessions"
+
 	// "mybudget/src/backend/users"
 	"net/http"
 	"strconv"
@@ -62,7 +65,8 @@ func (hc *HandlerContext) UsersHandler(w http.ResponseWriter, r *http.Request) {
 //Handler to handle /users/{UID}
 func (hc *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
-	stringID := strings.Split(path, "/")[3]
+	stringID := strings.Split(path, "/")[2]
+	log.Print(stringID)
 	sessionState := SessionState{}
 	_, err := sessions.GetState(r, hc.SigningKey, hc.Sessions, &sessionState)
 	if err != nil {
@@ -77,6 +81,7 @@ func (hc *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Req
 				http.Error(w, "couldn't convert string to int", http.StatusBadRequest)
 				return
 			}
+			log.Println(id)
 			user, err = hc.Users.GetByID(id)
 			if err != nil {
 				http.Error(w, "User not found", http.StatusNotFound)

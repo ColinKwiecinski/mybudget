@@ -64,7 +64,7 @@ func (sqlStore *MysqlStore) GetByContactNum(contactNum string) (*User, error) {
 }
 
 func (sqlStore *MysqlStore) Insert(user *User) (*User, error) {
-	query := "INSERT INTO Users (Name, Email, Contact_Num) VALUES (?, ?, ?, ?, ?, ?)"
+	query := "INSERT INTO Users (Name, Email, Contact_Num) VALUES (?, ?, ?)"
 	res, err := sqlStore.db.Exec(query, user.Name, user.Email, user.Contact_Num)
 	if err != nil {
 		return nil, err
@@ -96,7 +96,7 @@ func (sqlStore *MysqlStore) Delete(id int64) error {
 
 func (sqlStore *MysqlStore) InsertTransaction(t *Transaction) error {
 	query := "INSERT INTO TRANSACTIONS (User_ID, Transaction_Name, Memo, Transaction_Date, Amount, Transaction_Type) values (?,?,?,?,?,?)"
-	_, err := sqlStore.db.Exec(query, t.UID, t.Name, t.Memo, t.Amount, t.Type)
+	_, err := sqlStore.db.Exec(query, t.UID, t.Name, t.Memo, t.Date, t.Amount, t.Type)
 	if err != nil {
 		return errors.New("error while inserting new transaction")
 	}

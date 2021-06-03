@@ -1,5 +1,5 @@
 FROM alpine
 RUN apk add --no-cache ca-certificates
-COPY gateway /gateway
+COPY backend /backend
 EXPOSE 443
-ENTRYPOINT [ "/gateway" ]
+ENTRYPOINT [ "/backend" ]
