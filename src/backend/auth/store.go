@@ -23,5 +23,5 @@ type Store interface {
 
 	DeleteTransaction(id int64) error
 
-	GetTransactions(selector string, value string) (*[]Transaction, error)
+	GetTransactions(selector string, value string, uid int64) (*[]Transaction, error)
 }

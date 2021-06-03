@@ -16,8 +16,8 @@ import (
 )
 
 type Transaction struct {
-	ID     string  `json:"id"`
-	UID    string  `json:"uid"`
+	ID     int64  `json:"id"`
+	UID    int64  `json:"uid"`
 	Name   string  `json:"name"`
 	Memo   string  `json:"memo"`
 	Date   string  `json:"date"`
@@ -93,7 +93,7 @@ func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *
 		http.Error(w, "not implemented", http.StatusNotImplemented)
 	} else if r.Method == http.MethodGet {
 		endpoint := strings.TrimPrefix(r.URL.Path, "/transactions/")
-		res, err := ctx.Users.GetTransactions("id", endpoint)
+		res, err := ctx.Users.GetTransactions("id", endpoint, endpoint)
 		if err != nil {
 			http.Error(w, "error getting transactions", http.StatusInternalServerError)
 			return
