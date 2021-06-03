@@ -42,20 +42,7 @@ func (ctx *HandlerContext) TransactionHandler(w http.ResponseWriter, r *http.Req
 			return
 		}
 
-<<<<<<< HEAD
-		// singleTransaction := Transaction{
-		// 	UID:    r.FormValue("uid"),
-		// 	Name:   r.FormValue("name"),
-		// 	Memo:   r.FormValue("memo"),
-		// 	Date:   r.FormValue("date"),
-		// 	Amount: amount,
-		// 	Type:   r.FormValue("type"),
-		// }
-
 		err := ctx.Users.InsertTransaction(&temp)
-=======
-		err = ctx.Users.InsertTransaction(&temp)
->>>>>>> 313e2d95d01f886b1199db8ae4a876b690c53097
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
