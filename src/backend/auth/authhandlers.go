@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"log"
 
+	"github.com/gorilla/mux"
 	"mybudget.com/src/backend/sessions"
 
 	// "mybudget/src/backend/users"
 	"net/http"
 	"strconv"
-	"strings"
 	"time"
 	// "mybudget.com/src/backend/sessions"
 	// "mybudget.com/src/backend/users"
@@ -64,8 +64,7 @@ func (hc *HandlerContext) UsersHandler(w http.ResponseWriter, r *http.Request) {
 
 //Handler to handle /users/{UID}
 func (hc *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Request) {
-	path := r.URL.Path
-	stringID := strings.Split(path, "/")[2]
+	stringID := mux.Vars(r)
 	log.Print(stringID)
 	sessionState := SessionState{}
 	_, err := sessions.GetState(r, hc.SigningKey, hc.Sessions, &sessionState)
@@ -75,8 +74,8 @@ func (hc *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Req
 	}
 	user := sessionState.User
 	if r.Method == "GET" {
-		if stringID != "me" {
-			id, err := strconv.ParseInt(stringID, 10, 64)
+		if stringID["UID"] != "me" {
+			id, err := strconv.ParseInt(stringID["UID"], 10, 64)
 			if err != nil {
 				http.Error(w, "couldn't convert string to int", http.StatusBadRequest)
 				return
@@ -87,7 +86,7 @@ func (hc *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Req
 				http.Error(w, "User not found", http.StatusNotFound)
 				return
 			}
-			if stringID != strconv.Itoa(int(user.ID)) {
+			if stringID["UID"] != strconv.Itoa(int(user.ID)) {
 				http.Error(w, "User not authanticated", http.StatusForbidden)
 				return
 			}
@@ -102,7 +101,7 @@ func (hc *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Req
 		}
 	} else if r.Method == "PATCH" {
 		currUser := sessionState.User
-		if stringID != "me" && stringID != strconv.Itoa(int(currUser.ID)) {
+		if stringID["UID"] != "me" && stringID["UID"] != strconv.Itoa(int(currUser.ID)) {
 			http.Error(w, "User not authanticated", http.StatusForbidden)
 			return
 		}

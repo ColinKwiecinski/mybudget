@@ -10,14 +10,15 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"strings"
+
 	// "time"
+	"github.com/gorilla/mux"
 	"mybudget.com/src/backend/sessions"
 )
 
 type Transaction struct {
-	ID     int64  `json:"id"`
-	UID    int64  `json:"uid"`
+	ID     int64   `json:"id"`
+	UID    int64   `json:"uid"`
 	Name   string  `json:"name"`
 	Memo   string  `json:"memo"`
 	Date   string  `json:"date"`
@@ -92,7 +93,8 @@ func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *
 		// TODO: IMPLEMENT PATCH LATER, NOT IMPORTANT AT THE MOMENT. IF TOO HARD JUST DELETE ROW AND ADD NEW ONE
 		http.Error(w, "not implemented", http.StatusNotImplemented)
 	} else if r.Method == http.MethodGet {
-		endpoint := strings.TrimPrefix(r.URL.Path, "/transactions/")
+		endpoint := mux.Vars(r)["UID"]
+		// endpoint := strings.TrimPrefix(r.URL.Path, "/transactions/")
 		res, err := ctx.Users.GetTransactions("id", endpoint, endpoint)
 		if err != nil {
 			http.Error(w, "error getting transactions", http.StatusInternalServerError)
@@ -108,7 +110,8 @@ func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *
 		}
 		enc.Encode(resp)
 	} else if r.Method == http.MethodDelete {
-		endpoint := strings.TrimPrefix(r.URL.Path, "/transactions/")
+		endpoint := mux.Vars(r)["UID"]
+		// endpoint := strings.TrimPrefix(r.URL.Path, "/transactions/")
 		endpointInt, err := strconv.ParseInt(endpoint, 0, 64)
 		if err != nil {
 			http.Error(w, "error bad id input", http.StatusBadRequest)
@@ -141,7 +144,7 @@ func checkJSONHeader(w http.ResponseWriter, r *http.Request) bool {
 }
 
 func processCSV(w http.ResponseWriter, r *http.Request) bool {
-	r.ParseMultipartForm(10 << 20)             // Limit upload file size to 10MB
+	r.ParseMultipartForm(10 << 20) // Limit upload file size to 10MB
 	// TODO: Undo underscore and use file. Not implemented yet
 	_, handler, err := r.FormFile("myFile") // TODO: do I need to change myfile to actually grab the POST body?
 	if err != nil {
