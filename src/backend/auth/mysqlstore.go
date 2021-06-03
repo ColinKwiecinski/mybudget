@@ -95,34 +95,34 @@ func (sqlStore *MysqlStore) Delete(id int64) error {
 }
 
 func (sqlStore *MysqlStore) InsertTransaction(t *Transaction) error {
-	query := "INSERT INTO TRANSACTIONS (User_ID, Transaction_Name, Memo, Transaction_Date, Amount, Transaction_Type) values (?,?,?,?,?,?)"
+	query := "INSERT INTO Transactions (User_ID, Transaction_Name, Memo, Transaction_Date, Amount, Transaction_Type) values (?,?,?,?,?,?)"
 	_, err := sqlStore.db.Exec(query, t.UID, t.Name, t.Memo, t.Date, t.Amount, t.Type)
 	if err != nil {
-		return errors.New("error while inserting new transaction")
+		return err
 	}
 	return nil
 }
 
 func (sqlStore *MysqlStore) DeleteTransaction(id int64) error {
-	query := "DELETE FROM TRANSACTIONS WHERE ID = ?"
+	query := "DELETE FROM Transactions WHERE User_ID = ?"
 	_, err := sqlStore.db.Exec(query, id)
 	if err != nil {
-		return errors.New("error while deleting transaction")
+		return err
 	}
 	return nil
 }
 
 func (sqlStore *MysqlStore) GetTransactions(selector string, value string, uid int64) (*[]Transaction, error) {
-	query := "SELECT * FROM Transactions WHERE ? = ? AND uid = ?"
+	query := "SELECT * FROM Transactions WHERE ? = ? AND User_ID = ?"
 	result, err := sqlStore.db.Query(query, selector, value, uid)
 	if err != nil {
-		return nil, errors.New("error while getting transactions")
+		return nil, err
 	}
 	output := make([]Transaction, 0)
 	for result.Next() {
 		var temp Transaction
 		if err := result.Scan(&temp.ID, &temp.UID, &temp.Name, &temp.Memo, &temp.Date, &temp.Amount, &temp.Type); err != nil {
-			return nil, errors.New("error while getting transactions")
+			return nil, err
 		}
 		output = append(output, temp)
 	}
