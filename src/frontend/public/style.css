@@ -1,0 +1,80 @@
+h1 {
+    font-weight: 300;
+    font-family: Roboto, sans-serif;
+    text-align: center;
+}
+
+h2 {
+    font-weight: bold;
+    font-family: Roboto, sans-serif;
+}
+
+p {
+    padding-top: 1.5rem;
+    font-family: Roboto, sans-serif;
+}
+
+#transactionForm {
+    vertical-align: middle;
+}
+
+#uid {
+    margin-left: 100px
+}
+
+#name, #memo {
+    margin-left: 30px
+}
+
+#memo {
+    margin-left: 25px
+}
+
+#date {
+    margin-left: 115px
+}
+
+#amount {
+    margin-left: 95px
+}
+
+input[type=number], select {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+input[type=text], select {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  input[type=button] {
+    width: 50%;
+    background-color: lightcoral;
+    align-items: center;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  input[type=button]:hover {
+    background-color: red;
+  }
+
+  footer {
+      text-align: center;
+      margin: 0 auto;
+  }
