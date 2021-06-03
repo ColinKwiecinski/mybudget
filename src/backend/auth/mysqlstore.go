@@ -3,6 +3,7 @@ package auth
 import (
 	"database/sql"
 	"errors"
+	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -11,10 +12,16 @@ type MysqlStore struct {
 	db *sql.DB
 }
 
-func NewMysqlStore(DB *sql.DB) *MysqlStore {
-	return &MysqlStore{
-		db: DB,
+func NewMysqlStore(dsn string) *MysqlStore {
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
+		log.Fatal("error opening database")
+		return nil
 	}
+	log.Println("Opened DB Successfully")
+	mysqlStore := &MysqlStore{}
+	mysqlStore.db = db
+	return mysqlStore
 }
 
 func (sqlStore *MysqlStore) GetByID(id int64) (*User, error) {
