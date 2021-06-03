@@ -20,11 +20,10 @@ class SignUp extends Component {
 
         this.state = {
             email: "",
-            userName: "",
-            firstName: "",
-            lastName: "",
+            name: "",
             password: "",
             passwordConf: "",
+            phoneNumber: "",
             error: ""
         };
 
@@ -34,16 +33,8 @@ class SignUp extends Component {
                 key: "email"
             },
             {
-                name: "Username",
-                key: "userName"
-            },
-            {
-                name: "First name",
-                key: "firstName"
-            },
-            {
-                name: "Last name",
-                key: "lastName"
+                name: "Name",
+                key: "name"
             },
             {
                 name: "Password",
@@ -52,6 +43,10 @@ class SignUp extends Component {
             {
                 name: "Password Confirmation",
                 key: "passwordConf"
+            },
+            {
+                name: "Phone Number",
+                key: "contact"
             }];
     }
 
@@ -75,18 +70,16 @@ class SignUp extends Component {
     submitForm = async (e) => {
         e.preventDefault();
         const { email,
-            userName,
-            firstName,
-            lastName,
+            name,
             password,
-            passwordConf } = this.state;
+            passwordConf,
+            contact } = this.state;
         const sendData = {
             email,
-            userName,
-            firstName,
-            lastName,
+            name,
             password,
-            passwordConf
+            passwordConf,
+            contact
         };
         const response = await fetch(api.base + api.handlers.users, {
             method: "POST",
