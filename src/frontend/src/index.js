@@ -15,7 +15,7 @@ serviceWorker.unregister();
 
 // Send transaction to backend
 const thisForm = document.getElementById('transactionForm');
-thisForm.addEventListener('submitButton', async function (e) {
+thisForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     const formData = new FormData(thisForm).entries()
     const response = await fetch(IP, {
@@ -28,14 +28,18 @@ thisForm.addEventListener('submitButton', async function (e) {
     console.log(result)
 });
 
-// Display transaction visualization on frontend
-const plotButton = document.getElementById('chartsButton');
-plotButton.addEventListener(plotButton, async function (e) {
-  e.preventDefault();
-  const resp = await fetch(IP + "/1", { // TODO figure out specific user id
-
-  })
+thisForm.addEventListener('submit', () => {
+  console.log("working")
 })
+
+// // Display transaction visualization on frontend
+// const plotButton = document.getElementById('chartsButton');
+// plotButton.addEventListener(plotButton, async function (e) {
+//   e.preventDefault();
+//   const resp = await fetch(IP + "/1", { // TODO figure out specific user id
+
+//   })
+// })
 
 function barChart(result) {
   var output = document.getElementById('plotoutput')

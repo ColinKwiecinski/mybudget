@@ -45,26 +45,12 @@ func (ctx *HandlerContext) TransactionHandler(w http.ResponseWriter, r *http.Req
 	// Test POST endpoint, test headers, check for valid body format,
 	// parse body or single row. Attempt to input into db, return errors if something goes wrong
 	if r.Method == http.MethodPost {
-		// https://medium.com/@naveen_22145/go-lang-multipart-file-uploader-api-csv-to-json-converter-565618b75990
-		// amount, err := strconv.ParseFloat(r.FormValue("amount"), 0)
-		// if err != nil {
-		// 	http.Error(w, "error while processing amount of transaction", http.StatusBadRequest)
-		// }
 		temp := Transaction{}
 		denc := json.NewDecoder(r.Body)
 		if err := denc.Decode(&temp); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
-		// singleTransaction := Transaction{
-		// 	UID:    r.FormValue("uid"),
-		// 	Name:   r.FormValue("name"),
-		// 	Memo:   r.FormValue("memo"),
-		// 	Date:   r.FormValue("date"),
-		// 	Amount: amount,
-		// 	Type:   r.FormValue("type"),
-		// }
 
 		err = ctx.Users.InsertTransaction(&temp)
 		if err != nil {
@@ -102,12 +88,7 @@ func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// resp, err := json.Marshal(res)
-		// if err != nil {
-		// 	http.Error(w, "error encoding", http.StatusInternalServerError)
-		// 	return
-		// }
-		// enc.Encode(resp)
+
 	} else if r.Method == http.MethodDelete {
 		endpoint := mux.Vars(r)["UID"]
 		endpointInt, err := strconv.ParseInt(endpoint, 0, 64)
