@@ -112,9 +112,9 @@ func (sqlStore *MysqlStore) DeleteTransaction(id int64) error {
 	return nil
 }
 
-func (sqlStore *MysqlStore) GetTransactions(selector string, value string, uid int64) (*[]Transaction, error) {
-	query := "SELECT * FROM Transactions WHERE ? = ? AND User_ID = ?"
-	result, err := sqlStore.db.Query(query, selector, value, uid)
+func (sqlStore *MysqlStore) GetTransactions(uid string) (*[]Transaction, error) {
+	query := "SELECT * FROM Transactions WHERE User_ID = ?"
+	result, err := sqlStore.db.Query(query, uid)
 	if err != nil {
 		return nil, err
 	}

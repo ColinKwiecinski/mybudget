@@ -96,7 +96,7 @@ func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *
 	} else if r.Method == http.MethodGet {
 		endpoint := mux.Vars(r)["UID"]
 		// endpoint := strings.TrimPrefix(r.URL.Path, "/transactions/")
-		res, err := ctx.Users.GetTransactions("id", endpoint, 1)
+		res, err := ctx.Users.GetTransactions(endpoint)
 		if err != nil {
 			http.Error(w, "error getting transactions", http.StatusInternalServerError)
 			return
