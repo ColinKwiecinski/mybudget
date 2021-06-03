@@ -6,22 +6,22 @@ import api from '../../../../Constants/APIEndpoints/APIEndpoints';
 const MainPageContent = ({ user, setPage }) => {
   const [avatar, setAvatar] = useState(null)
 
-  // const IP = "https://api.justinlim.me/transactions"
+  const IP = "https://api.justinlim.me/transactions"
 
-  // // Send transaction to backend
-  // const thisForm = document.getElementById('transactionForm');
-  // thisForm.addEventListener('submitButton', async function (e) {
-  //   e.preventDefault();
-  //   const formData = new FormData(thisForm).entries()
-  //   const response = await fetch(IP, {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(Object.fromEntries(formData))
-  //   });
+  // Send transaction to backend
+  const thisForm = document.getElementById('transactionForm');
+  thisForm.addEventListener('submitButton', async function (e) {
+    e.preventDefault();
+    const formData = new FormData(thisForm).entries()
+    const response = await fetch(IP, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(formData))
+    });
 
-  //   const result = await response.json();
-  //   console.log(result)
-  // });
+    const result = await response.json();
+    console.log(result)
+  });
 
   async function fetchAvatar() {
     const response = await fetch(api.base + api.handlers.myuserAvatar, {

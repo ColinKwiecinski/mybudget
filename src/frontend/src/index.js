@@ -6,31 +6,32 @@ import Plotly from 'plotly.js-dist';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
-const IP = "https://api.justinlim.me/transactions"
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-// Send transaction to backend
-const thisForm = document.getElementById('transactionForm');
-thisForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const formData = new FormData(thisForm).entries()
-    const response = await fetch(IP, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(Object.fromEntries(formData))
-    });
+// const IP = "https://api.justinlim.me/transactions"
+// // Send transaction to backend
+// const thisForm = document.getElementById('transactionForm');
+// thisForm.addEventListener('submit', async function (e) {
+//     e.preventDefault();
+//     const formData = new FormData(thisForm).entries()
+//     const response = await fetch(IP, {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify(Object.fromEntries(formData))
+//     });
 
-    const result = await response.json();
-    console.log(result)
-});
+//     const result = await response.json();
+//     console.log(result)
+// });
 
-thisForm.addEventListener('submit', () => {
-  console.log("working")
-})
+// thisForm.addEventListener('submit', () => {
+//   console.log("working")
+// })
 
 // // Display transaction visualization on frontend
 // const plotButton = document.getElementById('chartsButton');
