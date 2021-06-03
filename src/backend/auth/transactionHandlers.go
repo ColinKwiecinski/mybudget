@@ -46,24 +46,31 @@ func (ctx *HandlerContext) TransactionHandler(w http.ResponseWriter, r *http.Req
 	// parse body or single row. Attempt to input into db, return errors if something goes wrong
 	if r.Method == http.MethodPost {
 		// https://medium.com/@naveen_22145/go-lang-multipart-file-uploader-api-csv-to-json-converter-565618b75990
-		amount, err := strconv.ParseFloat(r.FormValue("amount"), 0)
-		if err != nil {
-			http.Error(w, "error while processing amount of transaction", http.StatusBadRequest)
+		// amount, err := strconv.ParseFloat(r.FormValue("amount"), 0)
+		// if err != nil {
+		// 	http.Error(w, "error while processing amount of transaction", http.StatusBadRequest)
+		// }
+		temp := Transaction{}
+		denc := json.NewDecoder(r.Body)
+		if err := denc.Decode(&temp); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
 		}
 
-		singleTransaction := Transaction{
-			UID:    r.FormValue("uid"),
-			Name:   r.FormValue("name"),
-			Memo:   r.FormValue("memo"),
-			Date:   r.FormValue("date"),
-			Amount: amount,
-			Type:   r.FormValue("type"),
-		}
+		// singleTransaction := Transaction{
+		// 	UID:    r.FormValue("uid"),
+		// 	Name:   r.FormValue("name"),
+		// 	Memo:   r.FormValue("memo"),
+		// 	Date:   r.FormValue("date"),
+		// 	Amount: amount,
+		// 	Type:   r.FormValue("type"),
+		// }
 
-		err = ctx.Users.InsertTransaction(&singleTransaction)
+		err = ctx.Users.InsertTransaction(&temp)
 		if err != nil {
 			http.Error(w, "error while querying database", http.StatusInternalServerError)
 		}
+		w.Write([]byte("input successful"))
 	} else {
 		statusNotAllowed(w)
 	}

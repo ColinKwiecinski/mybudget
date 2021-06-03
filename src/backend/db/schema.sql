@@ -25,7 +25,7 @@ CREATE TABLE Transactions (
     User_ID INT,
     Transaction_Name VARCHAR(255),
     Memo VARCHAR(255),
-    Transaction_Date DATETIME NOT NULL,
+    Transaction_Date VARCHAR(255) NOT NULL,
     Amount DECIMAL(8,2),
     -- Transaction_Type_ID INT,
     Transaction_Type VARCHAR(255),
