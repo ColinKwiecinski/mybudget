@@ -6,8 +6,6 @@ Group Members: Colin Kwiecinski, Yash Gupta, Justin Lim, Talin Hans
 ### Overview
 Our target audience is mainly all adults above the age of 16 and we feel that with apps like Venmo, Zelle and Splitwise money transfer has been made easy but yet we lack that user friendly app which allows us to view insightful reports from our bank statements. Moreover, we specifically target the young adults i.e college students since that is a huge user base that can be explored and most of the students want a budgeting application rather than looking through each row of the bank statement. These insightful reports would have visualizations comparing the different categories of expenses one made in the past month thereby allowing them to review if they made any miscellaneous expenses or comparing expenses over the past couple of months. We feel that this application can be as useful as Venmo or Splitwise over a period of time.
 
-As developers we want to build this application since the budgeting applications currently available only allow the user to manually enter their expenses. What we plan to do is simplify this process wherein the users can simply upload their bank statement in a csv at the end of the month. Once we have this we will then provide the users reports of their expenses based on the analysis we conducted.
-
 ## Technical Description
 ### Overview
 Our plan for this project is to develop a web application that allows users to input bank transaction data and generate useful reports and categorizations from that data. Users can set categorize their transactions (ie. gas, grocery, dining), and see history of spending patterns. Users will be able to create accounts to maintain their data which will all be stored in a MySQL database backend. 
