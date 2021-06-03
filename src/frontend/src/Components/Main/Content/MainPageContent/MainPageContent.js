@@ -98,6 +98,7 @@ class MainPageContent extends Component {
         this.props.setUser(user);
     }
 
+
     render() {
         const values = this.state;
         return <>
@@ -110,7 +111,8 @@ class MainPageContent extends Component {
             <button onClick={(e) => this.props.setPage(e, PageTypes.analysis)}>View Analysis</button>
             <button onClick={(e) => this.props.setPage(e, PageTypes.allTransactions)}>All Transaction</button>
         </>
+        }
     }
-}
+
 
 export default MainPageContent;
