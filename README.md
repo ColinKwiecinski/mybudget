@@ -10,26 +10,26 @@ As developers we want to build this application since the budgeting applications
 
 ## Technical Description
 ### Overview
-Our plan for this project is to develop a web application that allows users to input bank transaction data in the form of csv or manual entry and generate useful reports and categorizations from that data. Users can set budget alerts, categorize their transactions (ie. gas, grocery, dining), and see history of spending patterns. Users will be able to create accounts to maintain their data which will all be stored in a MySQL database backend. 
+Our plan for this project is to develop a web application that allows users to input bank transaction data and generate useful reports and categorizations from that data. Users can set categorize their transactions (ie. gas, grocery, dining), and see history of spending patterns. Users will be able to create accounts to maintain their data which will all be stored in a MySQL database backend. 
 
 ![Project Diagram](images/441_diagram.png "Project Diagram")
 
 ### User Summary Table
 | Priority | User | Description |
 |---|---|---|
-|P0| As a user | I want to track my spendings from a bank statement that allows me to track my budget. This will be implemented by adding a form input to pass in a csv (Almost all banks provide a downloadable CSV output of transactions. These CSVs typically contain columns for date, memo, amount, and type of transaction. Our program will be flexible to accept multiple formats of bank data CSV), or by manual entry of rows. This information will be saved by our database. GO, SQL, HTML|
-|P1| As a user | I want to get a notification when I spend more than my pre-set budget. Budget alerts will be generated when a user provides a target budget for a month. This will be implemented with SQL queries to determine sums for categories and Javascript to produce output on the frontend. GO, JS, SQL, HTML |
-|P2|As a user | I want to tag and categorize my transactions to see where I am spending my money. This will be implemented by input forms that allow users to associate tags with certain transaction rows in the DB. Data can then be aggregated from here to generate reports. GO, JS, SQL, HTML |
+|P0| As a user | I want to track my spendings from a bank statement that allows me to track my budget. This will be implemented by adding a form input to input transactions. A user can specify information like amount, memo, date, and type of transaction. This information will be saved by our database. GO, SQL, HTML|
+|P1|As a user | I want to tag and categorize my transactions to see where I am spending my money. This will be implemented by input forms that allow users to associate tags with certain transaction rows in the DB. Data can then be aggregated from here to generate reports. GO, JS, SQL, HTML |
+|P2| As a user | I want to be able to delete all of my data quickly and easily to protect my privacy. This will be implemented by a backend function that verifies and then clears a user's bank data. GO, JS, SQL, HTML |
+
 
 ### Endpoints
 * GET /User/{UID} - Gets the user information from the db
 * POST /User - creates a new user in the db
 * POST /transactions - Adding a new transaction (user’s bank statement) into the user’s transaction table. Typically contains data like: date, amount, memo, and type of transaction
-* GET /transactions/{UID} - Get a specific user’s transaction
+* GET /transactions/{UID} - Get a specific user’s transactions
 * PATCH /User/{UID} - Updating user information
-* PATCH /transaction/{UID}/{TID} - Update transaction information
 * DELETE /User/{UID} - Deletes user
-* DELETE /transaction/{UID}/{TID} - Delete transactions by their transaction ID
+* DELETE /transaction/{UID} - Clear all of a user's transaction data
 
 ### Database Schemas
 * Authorization
@@ -48,9 +48,6 @@ Our plan for this project is to develop a web application that allows users to i
   * Memo varchar
   * TransactionDate Date
   * Amount int
-  * TTID foreign key
-* TranscationType
-  * TTID primary key
-  * TransactionTypeName varchar
-  * TransactionTypeDescr varchar 
+  * Type varchar
+
 
