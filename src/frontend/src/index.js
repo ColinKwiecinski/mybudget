@@ -6,14 +6,14 @@ import Plotly from 'plotly.js-dist';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
-const IP = "3.137.198.198/transactions"
+const IP = "https://api.justinlim.me/transactions"
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-
+// Send transaction to backend
 const thisForm = document.getElementById('transactionForm');
 thisForm.addEventListener('submitButton', async function (e) {
     e.preventDefault();
@@ -28,11 +28,12 @@ thisForm.addEventListener('submitButton', async function (e) {
     console.log(result)
 });
 
+// Display transaction visualization on frontend
 const plotButton = document.getElementById('chartsButton');
 plotButton.addEventListener(plotButton, async function (e) {
   e.preventDefault();
-  const resp = await fetch(IP + "/1", {
-    
+  const resp = await fetch(IP + "/1", { // TODO figure out specific user id
+
   })
 })
 
