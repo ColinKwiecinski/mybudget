@@ -13,17 +13,16 @@ import (
 
 	// "time"
 	"github.com/gorilla/mux"
-	"mybudget.com/src/backend/sessions"
 )
 
 type Transaction struct {
-	ID     int64   `json:"id"`
-	UID    int64   `json:"uid"`
-	Name   string  `json:"name"`
-	Memo   string  `json:"memo"`
-	Date   string  `json:"date"`
-	Amount float64 `json:"amount"`
-	Type   string  `json:"type"`
+	ID     int64  `json:"id"`
+	UID    int64  `json:"uid"`
+	Name   string `json:"name"`
+	Memo   string `json:"memo"`
+	Date   string `json:"date"`
+	Amount string `json:"amount"`
+	Type   string `json:"type"`
 }
 
 // Endpoints:
@@ -32,15 +31,6 @@ type Transaction struct {
 // DELETE /transaction/{UID}
 
 func (ctx *HandlerContext) TransactionHandler(w http.ResponseWriter, r *http.Request) {
-	sid, err := sessions.GetSessionID(r, ctx.SigningKey)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusUnauthorized)
-		return
-	}
-	if sid == sessions.InvalidSessionID {
-		http.Error(w, "invalid session ID", http.StatusUnauthorized)
-		return
-	}
 
 	// Test POST endpoint, test headers, check for valid body format,
 	// parse body or single row. Attempt to input into db, return errors if something goes wrong
@@ -66,7 +56,7 @@ func (ctx *HandlerContext) TransactionHandler(w http.ResponseWriter, r *http.Req
 		// 	Type:   r.FormValue("type"),
 		// }
 
-		err = ctx.Users.InsertTransaction(&temp)
+		err := ctx.Users.InsertTransaction(&temp)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -78,17 +68,8 @@ func (ctx *HandlerContext) TransactionHandler(w http.ResponseWriter, r *http.Req
 }
 
 func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *http.Request) {
-	sid, err := sessions.GetSessionID(r, ctx.SigningKey)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusUnauthorized)
-		return
-	}
-	if sid == sessions.InvalidSessionID {
-		http.Error(w, "invalid session ID", http.StatusUnauthorized)
-		return
-	}
 
-	 if r.Method == http.MethodGet {
+	if r.Method == http.MethodGet {
 		endpoint := mux.Vars(r)["UID"]
 		res, err := ctx.Users.GetTransactions(endpoint)
 		if err != nil {

@@ -80,12 +80,13 @@ class App extends Component {
     render() {
         const { page, user } = this.state;
         return (
-            <div>
+            <div id="maincontent">
                 {user ?
                     <Main page={page}
                         setPage={this.setPage}
                         setAuthToken={this.setAuthToken}
                         user={user}
+                        authToken={this.state.authToken}
                         setUser={this.setUser} />
                     :
                     <Auth page={page}

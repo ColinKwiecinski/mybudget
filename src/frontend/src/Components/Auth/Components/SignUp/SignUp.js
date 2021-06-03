@@ -82,10 +82,10 @@ class SignUp extends Component {
             contact
         };
         const response = await fetch(api.base + api.handlers.users, {
-            method: "POST",
+            method: 'POST',
             body: JSON.stringify(sendData),
             headers: new Headers({
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             })
         });
         if (response.status >= 300) {

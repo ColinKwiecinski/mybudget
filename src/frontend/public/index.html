@@ -14,6 +14,8 @@
       homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;1,200;1,300;1,400;1,600&display=swap" rel="stylesheet">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -32,46 +34,21 @@
 
     <body>
       <div id="intro">
-        <h1>MyBudget Financial Planning Tool</h1>
+        <h1>MyBudget</h1>
         <p>This website is designed to help you visualize and analyze your spending habits based on bank data you input.</p>
       </div>
-
-      <h2>Login to service</h2>
       <div id="root"></div>
-      <div id="transactionInput">
-        <h2>Input new transaction here</h2>
-        <form id="transactionForm">
-          <label for="uid">UserID</label>
-          <input type="text" id="uid" name="uid"><br>
-
-          <label for="name">Transaction Name</label>
-          <input type="text" id="name" name="name"><br>
-
-          <label for="memo">Transaction Memo</label>
-          <input type="text" id="memo" name="memo"><br>
-
-          <label for="date">Date</label>
-          <input type="text" id="date" name="date"><br>
-
-          <label for="amount">Amount</label>
-          <input type="number" id="amount" name="amount"><br>
-
-          <input type="button" id="submitButton" value="Submit"><br>
-        </form>
-      </div>
+      
 
 
-      <div id="makeCharts">
+      <!-- <div id="makeCharts">
         <h2>Visualizations</h2>
         <p>Press the button below to generate visualizations based on the data you've inputted</p>
         <input type="button" id="chartsButton" value="Generate Charts">
       </div>
       <div id="plotoutput" style="width:600px; height:300px;">
-      </div>
-<<<<<<< HEAD
-=======
+      </div> -->
       <footer>Copyright &copy;2021 - &lt;MyBudget&gt; // INFO 441 Spring 2021 // Information School</footer>
->>>>>>> 878a3515870739a5995bdf9065769c41c137310f
     </body>
     </html>
   </body>

@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "plotly.js": "^1.58.4",
     "plotly.js-dist": "^1.58.4",
     "prop-types": "^15.6.2",
     "react": "^16.8.0-alpha.1",
+    "react-bootstrap": "^1.6.0",
+    "react-d3-library": "^1.1.8",
     "react-dom": "^16.8.0-alpha.1",
     "react-scripts": "2.1.3"
   },

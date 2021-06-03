@@ -4,5 +4,7 @@ export default {
     signedInMain: "SIGNEDIN_MAIN",
     signedInUpdateName: "SIGNEDIN_UPDATENAME",
     signedInUpdateAvatar: "SIGNEDIN_UPDATEAVATAR",
-    forgotPassword: "FORGOT_PASSWORD"
+    forgotPassword: "FORGOT_PASSWORD",
+    analysis: "ANALYSIS",
+    allTransactions: "ALLTRANSACTIONS"
 }

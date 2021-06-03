@@ -56,17 +56,15 @@ func main() {
 
 	mux.HandleFunc("/users", context.UsersHandler)
 	mux.HandleFunc("/users/{UID}", context.SpecificUserHandler)
+	mux.HandleFunc("/sessions", context.SessionsHandler)
+	mux.HandleFunc("/sessions/{UID}", context.SpecificSessionHandler)
 	mux.HandleFunc("/transactions", context.TransactionHandler)
 	mux.HandleFunc("/transactions/{UID}", context.SpecificTransactionHandler)
 
-	wrappedMux1 := NewResponseHeader(mux, "Access-Control-Allow-Origin", "*")
-	wrappedMux2 := NewResponseHeader(wrappedMux1, "Access-Control-Allow-Methods", "GET, PUT, POST, PATCH, DELETE")
-	wrappedMux3 := NewResponseHeader(wrappedMux2, "Access-Control-Allow-Headers", "Content-Type, Authorization")
-	wrappedMux4 := NewResponseHeader(wrappedMux3, "Access-Control-Expose-Headers", "Authorization")
-	wrappedMux5 := NewResponseHeader(wrappedMux4, "Access-Control-Max-Age", "600")
+	wrappedMux := auth.NewHeaderHandler(mux)
 
 	log.Printf("Listening at %s", addr)
-	log.Fatal(http.ListenAndServeTLS(addr, tlsCertPath, tlsKeyPath, wrappedMux5))
+	log.Fatal(http.ListenAndServeTLS(addr, tlsCertPath, tlsKeyPath, wrappedMux))
 }
 
 func getEnv(name string) string {

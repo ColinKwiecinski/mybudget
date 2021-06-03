@@ -26,39 +26,30 @@ func NewMysqlStore(dsn string) *MysqlStore {
 
 func (sqlStore *MysqlStore) GetByID(id int64) (*User, error) {
 	query := "SELECT ID, Name, Email, Contact_Num FROM Users WHERE ID=?"
-	row, err := sqlStore.db.Query(query, id)
+	var u User
+	err := sqlStore.db.QueryRow(query, id).Scan(&u.ID, &u.Name, &u.Email, &u.Contact_Num)
 	if err != nil {
 		return nil, err
-	}
-	var u User
-	if row.Next() {
-		row.Scan(&u.ID, &u.Name, &u.Email, &u.Contact_Num)
 	}
 	return &u, err
 }
 
 func (sqlStore *MysqlStore) GetByEmail(email string) (*User, error) {
 	query := "SELECT ID, Name, Email, Contact_Num FROM Users WHERE Email=?"
-	row, err := sqlStore.db.Query(query, email)
+	var u User
+	err := sqlStore.db.QueryRow(query, email).Scan(&u.ID, &u.Name, &u.Email, &u.Contact_Num)
 	if err != nil {
 		return nil, err
-	}
-	var u User
-	if row.Next() {
-		row.Scan(&u.ID, &u.Name, &u.Email, &u.Contact_Num)
 	}
 	return &u, err
 }
 
 func (sqlStore *MysqlStore) GetByContactNum(contactNum string) (*User, error) {
 	query := "SELECT ID, Name, Email, Contact_Num FROM Users WHERE Contact_Num=?"
-	row, err := sqlStore.db.Query(query, contactNum)
+	u := User{}
+	err := sqlStore.db.QueryRow(query, contactNum).Scan(&u.ID, &u.Name, &u.Email, &u.Contact_Num)
 	if err != nil {
 		return nil, err
-	}
-	u := User{}
-	if row.Next() {
-		row.Scan(&u.ID, &u.Name, &u.Email, &u.Contact_Num)
 	}
 	return &u, err
 }

@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"assignments-limj27/servers/gateway/models/users"
 	"encoding/json"
 	"log"
 
@@ -142,4 +143,58 @@ func (hc *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Req
 		http.Error(w, "Only PATCH, DELETE, and GET Method is allowed", http.StatusMethodNotAllowed)
 		return
 	}
+}
+
+func (hc *HandlerContext) SessionsHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Only POST Method is allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if r.Header.Get("Content-Type") != "application/json" {
+		http.Error(w, "Request body must be in JSON", http.StatusUnsupportedMediaType)
+		return
+	}
+	creds := &users.Credentials{}
+
+	denc := json.NewDecoder(r.Body)
+	if err := denc.Decode(creds); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	user, err := hc.Users.GetByEmail(creds.Email)
+	if err != nil {
+		http.Error(w, "Invalid Creditionals", http.StatusUnauthorized)
+		return
+	}
+
+	sessionState := SessionState{time.Now(), user}
+	_, err2 := sessions.BeginSession(hc.SigningKey, hc.Sessions, sessionState, w)
+	if err2 != nil {
+		http.Error(w, err2.Error(), http.StatusBadRequest)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	enc := json.NewEncoder(w)
+	if err := enc.Encode(user); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+}
+
+func (hc *HandlerContext) SpecificSessionHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "DELETE" {
+		http.Error(w, "Only Delete Method is allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	stringID := mux.Vars(r)["UID"]
+	if stringID != "mine" {
+		http.Error(w, "User not authticated", http.StatusForbidden)
+		return
+	}
+	sessions.EndSession(r, hc.SigningKey, hc.Sessions)
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write([]byte("signed out"))
 }

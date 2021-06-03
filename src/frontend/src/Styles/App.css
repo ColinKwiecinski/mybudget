@@ -1,3 +1,8 @@
 body {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'Nunito Sans', sans-serif, "Regular 400";
+}
+
+#maincontent {
+    background-color: gray;
+    font-family: 'Nunito Sans', sans-serif, "Regular 400";
 }

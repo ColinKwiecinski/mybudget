@@ -12,7 +12,7 @@ const SignForm = ({ setField, submitForm, values, fields }) => {
                         value={values[key]}
                         name={key}
                         onChange={setField}
-                        type={key === "password" || key === "passwordConf" ? "password" : ''}
+                        type="text"
                     />
                 </div>
             })}
