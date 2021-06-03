@@ -1,10 +1,8 @@
-package users
+package auth
 
 import (
 	"database/sql"
 	"errors"
-
-	"mybudget/src/backend/auth"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -19,46 +17,46 @@ func NewMysqlStore(DB *sql.DB) *MysqlStore {
 	}
 }
 
-func (sqlStore *MysqlStore) GetByID(id int64) (*auth.User, error) {
+func (sqlStore *MysqlStore) GetByID(id int64) (*User, error) {
 	query := "SELECT ID, Name, Email, Contact_Num FROM Users WHERE ID=?"
 	row, err := sqlStore.db.Query(query, id)
 	if err != nil {
 		return nil, err
 	}
-	var u auth.User
+	var u User
 	if row.Next() {
 		row.Scan(&u.ID, &u.Name, &u.Email, &u.Contact_Num)
 	}
 	return &u, err
 }
 
-func (sqlStore *MysqlStore) GetByEmail(email string) (*auth.User, error) {
+func (sqlStore *MysqlStore) GetByEmail(email string) (*User, error) {
 	query := "SELECT ID, Name, Email, Contact_Num FROM Users WHERE Email=?"
 	row, err := sqlStore.db.Query(query, email)
 	if err != nil {
 		return nil, err
 	}
-	var u auth.User
+	var u User
 	if row.Next() {
 		row.Scan(&u.ID, &u.Name, &u.Email, &u.Contact_Num)
 	}
 	return &u, err
 }
 
-func (sqlStore *MysqlStore) GetByContactNum(contactNum string) (*auth.User, error) {
+func (sqlStore *MysqlStore) GetByContactNum(contactNum string) (*User, error) {
 	query := "SELECT ID, Name, Email, Contact_Num FROM Users WHERE Contact_Num=?"
 	row, err := sqlStore.db.Query(query, contactNum)
 	if err != nil {
 		return nil, err
 	}
-	u := auth.User{}
+	u := User{}
 	if row.Next() {
 		row.Scan(&u.ID, &u.Name, &u.Email, &u.Contact_Num)
 	}
 	return &u, err
 }
 
-func (sqlStore *MysqlStore) Insert(user *auth.User) (*auth.User, error) {
+func (sqlStore *MysqlStore) Insert(user *User) (*User, error) {
 	query := "INSERT INTO Users (Name, Email, Contact_Num) VALUES (?, ?, ?, ?, ?, ?)"
 	res, err := sqlStore.db.Exec(query, user.Name, user.Email, user.Contact_Num)
 	if err != nil {
@@ -71,7 +69,7 @@ func (sqlStore *MysqlStore) Insert(user *auth.User) (*auth.User, error) {
 	return sqlStore.GetByID(id)
 }
 
-func (sqlStore *MysqlStore) Update(id int64, updates *auth.Updates) (*auth.User, error) {
+func (sqlStore *MysqlStore) Update(id int64, updates *Updates) (*User, error) {
 	query := "UPDATE Users  SET Name = ?, Email = ?, Contact_Num = ? WHERE id = ?"
 	_, err := sqlStore.db.Exec(query, updates.Name, updates.Email, updates.Contact_Num, id)
 	if err != nil {
@@ -89,7 +87,7 @@ func (sqlStore *MysqlStore) Delete(id int64) error {
 	return nil
 }
 
-func (sqlStore *MysqlStore) InsertTransaction(t *handlers.Transaction) error {
+func (sqlStore *MysqlStore) InsertTransaction(t *Transaction) error {
 	query := "INSERT INTO TRANSACTIONS (User_ID, Transaction_Name, Memo, Transaction_Date, Amount, Transaction_Type) values (?,?,?,?,?,?)"
 	_, err := sqlStore.db.Exec(query, t.UID, t.Name, t.Memo, t.Amount, t.Type)
 	if err != nil {
@@ -107,20 +105,20 @@ func (sqlStore *MysqlStore) DeleteTransaction(id int64) error {
 	return nil
 }
 
-func (sqlStore *MysqlStore) GetTransactions(selector string, value string) (*[]auth.Transaction, error) {
+func (sqlStore *MysqlStore) GetTransactions(selector string, value string) (*[]Transaction, error) {
 	query := "SELECT * FROM Transactions WHERE ? = ?"
 	result, err := sqlStore.db.Query(query, selector, value)
 	defer result.Close()
 	if err != nil {
 		return nil, errors.New("error while getting transactions")
 	}
-	output := make([]handlers.Transaction, 0)
+	output := make([]Transaction, 0)
 	for result.Next() {
-		var temp handlers.Transaction
+		var temp Transaction
 		if err := result.Scan(&temp.ID, &temp.UID, &temp.Name, &temp.Memo, &temp.Date, &temp.Amount, &temp.Type); err != nil {
 			return nil, errors.New("error while getting transactions")
 		}
 		output = append(output, temp)
 	}
-	return output, nil
+	return &output, nil
 }

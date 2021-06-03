@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"mybudget/src/backend/sessions"
+	"mybudget.com/src/backend/sessions"
 )
 
 type HandlerContext struct {

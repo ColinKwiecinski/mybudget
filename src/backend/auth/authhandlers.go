@@ -2,8 +2,8 @@ package auth
 
 import (
 	"encoding/json"
-	"mybudget/src/backend/sessions"
-	"mybudget/src/backend/users"
+	"mybudget.com/src/backend/sessions"
+	// "mybudget/src/backend/users"
 	"net/http"
 	"strconv"
 	"strings"
@@ -22,7 +22,7 @@ func (hc *HandlerContext) UsersHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Request body must be in JSON", http.StatusUnsupportedMediaType)
 		return
 	}
-	newUser := &users.NewUser{}
+	newUser := &NewUser{}
 
 	denc := json.NewDecoder(r.Body)
 	if err := denc.Decode(newUser); err != nil {
@@ -105,7 +105,7 @@ func (hc *HandlerContext) SpecificUserHandler(w http.ResponseWriter, r *http.Req
 			http.Error(w, "Request body must be JSON", http.StatusUnsupportedMediaType)
 			return
 		}
-		newUpdates := &users.Updates{}
+		newUpdates := &Updates{}
 		denc := json.NewDecoder(r.Body)
 		if err := denc.Decode(newUpdates); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)

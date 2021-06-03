@@ -49,7 +49,7 @@ func (ctx *HandlerContext) TransactionHandler(w http.ResponseWriter, r *http.Req
 			Type:   r.FormValue("type"),
 		}
 
-		err = ctx.Users.InsertTransaction(singleTransaction)
+		err = ctx.Users.InsertTransaction(&singleTransaction)
 		if err != nil {
 			http.Error(w, "error while querying database", http.StatusInternalServerError)
 		}
@@ -65,7 +65,7 @@ func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *
 		http.Error(w, "not implemented", http.StatusNotImplemented)
 	} else if r.Method == http.MethodGet {
 		endpoint := strings.TrimPrefix(r.URL.Path, "/transactions/")
-		res, err := ctx.Users.GetTransactions(endpoint)
+		res, err := ctx.Users.GetTransactions("id", endpoint)
 		if err != nil {
 			http.Error(w, "error getting transactions", http.StatusInternalServerError)
 			return
@@ -81,11 +81,17 @@ func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *
 		enc.Encode(resp)
 	} else if r.Method == http.MethodDelete {
 		endpoint := strings.TrimPrefix(r.URL.Path, "/transactions/")
-		err := ctx.Users.DeleteTransaction(endpoint)
+		endpointInt, err := strconv.ParseInt(endpoint, 0, 64)
+		if err != nil {
+			http.Error(w, "error bad id input", http.StatusBadRequest)
+			return
+		}
+		err = ctx.Users.DeleteTransaction(endpointInt)
 		if err != nil {
 			http.Error(w, "error while deleting row", http.StatusInternalServerError)
 			return
 		}
+		w.Write([]byte("entry deleted"))
 	} else {
 		statusNotAllowed(w)
 	}
@@ -108,7 +114,8 @@ func checkJSONHeader(w http.ResponseWriter, r *http.Request) bool {
 
 func processCSV(w http.ResponseWriter, r *http.Request) bool {
 	r.ParseMultipartForm(10 << 20)             // Limit upload file size to 10MB
-	file, handler, err := r.FormFile("myFile") // TODO: do I need to change myfile to actually grab the POST body?
+	// TODO: Undo underscore and use file. Not implemented yet
+	_, handler, err := r.FormFile("myFile") // TODO: do I need to change myfile to actually grab the POST body?
 	if err != nil {
 		http.Error(w, "error while processing csv upload: "+err.Error(), http.StatusBadRequest)
 		return false

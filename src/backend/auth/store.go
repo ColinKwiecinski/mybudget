@@ -2,7 +2,6 @@ package auth
 
 import (
 	"errors"
-	"mybudget/src/backend/auth"
 )
 
 var ErrUserNotFound = errors.New("User Not Found")
@@ -20,9 +19,9 @@ type Store interface {
 
 	Delete(id int64) error
 
-	InsertTransaction(t *auth.Transaction) error
+	InsertTransaction(t *Transaction) error
 
 	DeleteTransaction(id int64) error
 
-	GetTransactions(selector string, value string) (*[]auth.Transaction, error)
+	GetTransactions(selector string, value string) (*[]Transaction, error)
 }
