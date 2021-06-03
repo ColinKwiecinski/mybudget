@@ -69,7 +69,8 @@ func (ctx *HandlerContext) TransactionHandler(w http.ResponseWriter, r *http.Req
 
 		err = ctx.Users.InsertTransaction(&temp)
 		if err != nil {
-			http.Error(w, "error while querying database", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
 		w.Write([]byte("input successful"))
 	} else {
@@ -95,7 +96,7 @@ func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *
 	} else if r.Method == http.MethodGet {
 		endpoint := mux.Vars(r)["UID"]
 		// endpoint := strings.TrimPrefix(r.URL.Path, "/transactions/")
-		res, err := ctx.Users.GetTransactions("id", endpoint, endpoint)
+		res, err := ctx.Users.GetTransactions("id", endpoint, 1)
 		if err != nil {
 			http.Error(w, "error getting transactions", http.StatusInternalServerError)
 			return
