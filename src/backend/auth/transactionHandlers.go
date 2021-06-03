@@ -104,12 +104,16 @@ func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(200)
 		enc := json.NewEncoder(w)
-		resp, err := json.Marshal(res)
-		if err != nil {
-			http.Error(w, "error encoding", http.StatusInternalServerError)
+		if err := enc.Encode(res); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		enc.Encode(resp)
+		// resp, err := json.Marshal(res)
+		// if err != nil {
+		// 	http.Error(w, "error encoding", http.StatusInternalServerError)
+		// 	return
+		// }
+		// enc.Encode(resp)
 	} else if r.Method == http.MethodDelete {
 		endpoint := mux.Vars(r)["UID"]
 		// endpoint := strings.TrimPrefix(r.URL.Path, "/transactions/")
