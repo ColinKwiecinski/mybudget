@@ -28,9 +28,8 @@ type Transaction struct {
 
 // Endpoints:
 // POST /transactions - add new transaction into users transaction table
-// GET /transactions{UID} - Get a specific user's transaction data
-// PATCH /transaction/{UID}/{TID} - Update single row transaction
-// DELETE /transaction/{UID}/{TID}
+// GET /transactions/{UID} - Get a specific user's transaction data
+// DELETE /transaction/{UID}
 
 func (ctx *HandlerContext) TransactionHandler(w http.ResponseWriter, r *http.Request) {
 	sid, err := sessions.GetSessionID(r, ctx.SigningKey)
@@ -89,13 +88,8 @@ func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *
 		return
 	}
 
-	// Test for each of the three GET PATCH DELETE methods. Verify headers. Verify body for patch
-	if r.Method == http.MethodPatch {
-		// TODO: IMPLEMENT PATCH LATER, NOT IMPORTANT AT THE MOMENT. IF TOO HARD JUST DELETE ROW AND ADD NEW ONE
-		http.Error(w, "not implemented", http.StatusNotImplemented)
-	} else if r.Method == http.MethodGet {
+	 if r.Method == http.MethodGet {
 		endpoint := mux.Vars(r)["UID"]
-		// endpoint := strings.TrimPrefix(r.URL.Path, "/transactions/")
 		res, err := ctx.Users.GetTransactions(endpoint)
 		if err != nil {
 			http.Error(w, "error getting transactions", http.StatusInternalServerError)
@@ -112,7 +106,6 @@ func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *
 		enc.Encode(resp)
 	} else if r.Method == http.MethodDelete {
 		endpoint := mux.Vars(r)["UID"]
-		// endpoint := strings.TrimPrefix(r.URL.Path, "/transactions/")
 		endpointInt, err := strconv.ParseInt(endpoint, 0, 64)
 		if err != nil {
 			http.Error(w, "error bad id input", http.StatusBadRequest)

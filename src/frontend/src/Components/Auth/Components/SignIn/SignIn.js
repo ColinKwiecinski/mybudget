@@ -70,10 +70,12 @@ class SignIn extends Component {
         }
         const authToken = response.headers.get("Authorization")
         localStorage.setItem("Authorization", authToken);
+
         this.setError("");
         this.props.setAuthToken(authToken);
         const user = await response.json();
         this.props.setUser(user);
+        localStorage.setItem("User_ID", user)
     }
 
     render() {
