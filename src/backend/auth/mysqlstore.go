@@ -73,7 +73,7 @@ func (sqlStore *MysqlStore) Update(id int64, updates *Updates) (*User, error) {
 	query := "UPDATE Users  SET Name = ?, Email = ?, Contact_Num = ? WHERE id = ?"
 	_, err := sqlStore.db.Exec(query, updates.Name, updates.Email, updates.Contact_Num, id)
 	if err != nil {
-		return nil, errors.New("Error Updating User, Check Update Parameters")
+		return nil, errors.New("error Updating User, Check Update Parameters")
 	}
 	return sqlStore.GetByID(id)
 }
@@ -82,7 +82,7 @@ func (sqlStore *MysqlStore) Delete(id int64) error {
 	query := "DELETE FROM Users WHERE id = ?"
 	_, err := sqlStore.db.Exec(query, id)
 	if err != nil {
-		return errors.New("Error Deleting Existing User from the database")
+		return errors.New("error Deleting Existing User from the database")
 	}
 	return nil
 }
@@ -108,7 +108,6 @@ func (sqlStore *MysqlStore) DeleteTransaction(id int64) error {
 func (sqlStore *MysqlStore) GetTransactions(selector string, value string) (*[]Transaction, error) {
 	query := "SELECT * FROM Transactions WHERE ? = ?"
 	result, err := sqlStore.db.Query(query, selector, value)
-	defer result.Close()
 	if err != nil {
 		return nil, errors.New("error while getting transactions")
 	}
@@ -120,5 +119,6 @@ func (sqlStore *MysqlStore) GetTransactions(selector string, value string) (*[]T
 		}
 		output = append(output, temp)
 	}
+	defer result.Close()
 	return &output, nil
 }

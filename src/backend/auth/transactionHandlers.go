@@ -12,6 +12,7 @@ import (
 	"strconv"
 	"strings"
 	// "time"
+	"mybudget.com/src/backend/sessions"
 )
 
 type Transaction struct {
@@ -31,6 +32,16 @@ type Transaction struct {
 // DELETE /transaction/{UID}/{TID}
 
 func (ctx *HandlerContext) TransactionHandler(w http.ResponseWriter, r *http.Request) {
+	sid, err := sessions.GetSessionID(r, ctx.SigningKey)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+	if sid == sessions.InvalidSessionID {
+		http.Error(w, "invalid session ID", http.StatusUnauthorized)
+		return
+	}
+
 	// Test POST endpoint, test headers, check for valid body format,
 	// parse body or single row. Attempt to input into db, return errors if something goes wrong
 	if r.Method == http.MethodPost {
@@ -59,6 +70,16 @@ func (ctx *HandlerContext) TransactionHandler(w http.ResponseWriter, r *http.Req
 }
 
 func (ctx *HandlerContext) SpecificTransactionHandler(w http.ResponseWriter, r *http.Request) {
+	sid, err := sessions.GetSessionID(r, ctx.SigningKey)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+	if sid == sessions.InvalidSessionID {
+		http.Error(w, "invalid session ID", http.StatusUnauthorized)
+		return
+	}
+
 	// Test for each of the three GET PATCH DELETE methods. Verify headers. Verify body for patch
 	if r.Method == http.MethodPatch {
 		// TODO: IMPLEMENT PATCH LATER, NOT IMPORTANT AT THE MOMENT. IF TOO HARD JUST DELETE ROW AND ADD NEW ONE
